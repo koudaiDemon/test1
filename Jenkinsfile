@@ -1,20 +1,15 @@
 pipeline {
-  agent { 
-    docker {
-      image 'maven:3.3.3'
-      args '-v /root/.m2:/root/.m2'
-    }  
-  }
+  agent any
   stages {
     stage('check') {
       steps {
         sh 'pwd'
-        sh 'mvn --version'
+        sh '/u01/app/apache-maven-3.6.1/bin/mvn --version'
       }
     }
     stage('build') {
       steps {
-        sh 'mvn clean package -DskipTests=true  -Dspring-boot.repackage.skip=false -U'
+        sh '/u01/app/apache-maven-3.6.1/bin/mvn clean package -DskipTests=true  -Dspring-boot.repackage.skip=false -U'
       }
     }
     stage('build image') {
