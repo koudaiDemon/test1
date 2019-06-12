@@ -20,9 +20,9 @@ cat >> ~/.bash_profile <<EOF
 export version=demo-ci-$current-${BUILD_NUMBER}
 EOF
 
-cp target/spring-boot-hello-1.0.jar src/main/docker/app.jar
+cp target/spring-boot-hello-1.0.jar src/docker/app.jar
 sudo docker login -u ${DOCKER_USER} -p ${DOCKER_PWD} ${DOCKER_REGISTRY}
-sudo docker build --pull -t ${DOCKER_REGISTRY}/${NAME_SPACE}/${PROJECT_NAME}:${version} ${1:-"src/main/docker"}
+sudo docker build --pull -t ${DOCKER_REGISTRY}/${NAME_SPACE}/${PROJECT_NAME}:${version} ${1:-"src/docker"}
 sudo docker push ${DOCKER_REGISTRY}/${NAME_SPACE}/${PROJECT_NAME}:${version}
 '''
       }
