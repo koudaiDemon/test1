@@ -1,0 +1,20 @@
+server:
+  port: 8085
+spring:
+  profiles:
+    active: uat
+---
+server:
+  port: 8083
+spring:
+  profiles: dev
+---
+server:
+  port: 8084
+spring:
+  profiles: prod
+  messages:
+    basename:  #指定属于哪个环境
+
+
+    
