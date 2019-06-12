@@ -1,5 +1,10 @@
 pipeline {
-  agent { docker 'maven:3.3.3' }
+  agent { 
+    docker {
+      image 'maven:3.3.3'
+      args '-v /root/.m2:/root/.m2'
+    }  
+  }
   stages {
     stage('check') {
       steps {
@@ -21,16 +26,16 @@ export version=demo-ci-$current-${BUILD_NUMBER}
 EOF
 
 cp target/spring-boot-hello-1.0.jar src/docker/app.jar
-sudo docker login -u ${DOCKER_USER} -p ${DOCKER_PWD} ${DOCKER_REGISTRY}
-sudo docker build --pull -t ${DOCKER_REGISTRY}/${NAME_SPACE}/${PROJECT_NAME}:${version} ${1:-"src/docker"}
-sudo docker push ${DOCKER_REGISTRY}/${NAME_SPACE}/${PROJECT_NAME}:${version}
+docker login -u ${DOCKER_USER} -p ${DOCKER_PWD} ${DOCKER_REGISTRY}
+docker build --pull -t ${DOCKER_REGISTRY}/${NAME_SPACE}/${PROJECT_NAME}:${version} ${1:-"src/docker"}
+docker push ${DOCKER_REGISTRY}/${NAME_SPACE}/${PROJECT_NAME}:${version}
 '''
       }
     }
     stage('clean image') {
       steps {
         sh '''source ~/.bash_profile
-sudo docker rmi ${DOCKER_REGISTRY}/${NAME_SPACE}/${PROJECT_NAME}:${version}'''
+  docker rmi ${DOCKER_REGISTRY}/${NAME_SPACE}/${PROJECT_NAME}:${version}'''
       }
     }
   }
